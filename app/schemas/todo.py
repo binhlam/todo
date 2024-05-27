@@ -5,7 +5,7 @@ class TodoCreate(BaseModel):
   title: str = Field(min_length=3, max_length=80)
   description: str = Field(min_length=3, max_length=200)
   priority: int = Field(gt=0)
-  complete: bool
+  complete: int
 
   class Config:
     json_schema_extra = {
@@ -21,7 +21,7 @@ class TodoUpdate(BaseModel):
   title: str = Field(min_length=3, max_length=80)
   description: str = Field(min_length=3, max_length=200)
   priority: int = Field(gt=0)
-  complete: bool
+  complete: int
 
   class Config:
     json_schema_extra = {

@@ -8,7 +8,7 @@ from ...repositories import todo as todo_repo
 from ...services.security.auth import get_current_user
 
 router = APIRouter(
-  prefix='/admin',
+  prefix='/v1/admin',
   tags=['admin']
 )
 

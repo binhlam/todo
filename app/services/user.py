@@ -41,12 +41,17 @@ def get_user_by_id(db: Session, current_user: User, user_id: int):
 
   return user
 
-def create_user(db: Session, author: User, user_create: UserCreate):
-  if author.role != 'admin':
-    raise PermissionDenied
-
-  user_create.password = bcrypt_context.hash(user_create.password)
-  user = user_repo.create_user(db=db, user=user_create)
+def create_user(db: Session, user_create: UserCreate):
+  user = User(
+    email=user_create.email,
+    username = user_create.username,
+    first_name=user_create.first_name,
+    last_name=user_create.last_name,
+    hashed_password=bcrypt_context.hash(user_create.password),
+    role=user_create.role,
+    phone_number=user_create.phone_number
+  )
+  user = user_repo.create_user(db=db, user=user)
   if user is None:
     logger.error('Cannot create user with data: {user_create}}')
     raise CreateRecordError(record_type='User')

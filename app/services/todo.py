@@ -2,6 +2,7 @@ import logging
 
 from sqlalchemy.orm import Session
 
+from ..models.todo import Todo
 from ..repositories import todo as todo_repo
 from ..schemas.todo import TodoCreate, TodoUpdate
 
@@ -21,7 +22,7 @@ def get_todos_by_user_id(db: Session, user_id: int):
 def get_todo(db: Session, todo_id:int):
   return todo_repo.get_todo_by_id(db, todo_id)
 
-def create_todo(db: Session, todo_create: TodoCreate):
+def create_todo(db: Session, todo_create: Todo):
   todo = todo_repo.create_todo(db=db, todo_create=todo_create)
   if todo is None:
     logger.error('Cannot create todo with data: {user_create}}')
