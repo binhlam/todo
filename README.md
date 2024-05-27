@@ -26,7 +26,10 @@
     ```
 
 3. Documented & tested with swagger:
-    * Api Run:
+    * Localhost run:
     ```sh
     http://127.0.0.1:8000/docs
     ```
+    <img width="701" alt="image" src="https://github.com/binhlam/todo/assets/19790314/b9eeb48e-bda7-44f8-b800-d6aa3abf5d53">
+
+    <img width="1346" alt="image" src="https://github.com/binhlam/todo/assets/19790314/5c2e78d9-f698-4807-a71d-c072636f3d2a">
