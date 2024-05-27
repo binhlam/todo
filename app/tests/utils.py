@@ -1,9 +1,9 @@
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from ..api.auth import bcrypt_context
-from ..models.models import User
+from ..models.user import User
+from ..services.security.utils import bcrypt_context
 
 DATABASE_URL = 'postgresql://localhost:5432/todo_test'
 
@@ -21,11 +21,11 @@ def override_get_db():
     db.close()
   
 def override_get_current_user():
-  return {
-    'sub': 'binh.lam',
-    'id': 1,
-    'role': 'admin'
-  }
+  return User(
+    id=1,
+    role='admin',
+    username='admin01'
+  )
 
 def init_user():
   user = User(

@@ -8,19 +8,17 @@ def get_todo_by_id(db: Session, todo_id: int):
   return db.query(Todo).filter(Todo.id == todo_id).first()
 
 def get_todo_by_user_id(db: Session, user_id: int):
-    return db.query(Todo).filter(Todo.user_id == user_id).first()
+    return db.query(Todo).filter(Todo.owner_id == user_id).first()
 
 def get_todos(db: Session, skip: int = 0, limit: int = 20):
     return db.query(Todo).offset(skip).limit(limit).all()
 
-def create_todo(db: Session, todo_create: TodoCreate):
-    todo = Todo(**todo_create.dict())
-
-    db.add(todo)
+def create_todo(db: Session, todo_create: Todo):
+    db.add(todo_create)
     db.commit()
-    db.refresh(todo)
+    db.refresh(todo_create)
 
-    return todo
+    return todo_create
 
 def update_todo(db: Session, todo: Todo, todo_update: TodoUpdate):
     todo.title = todo_update.title

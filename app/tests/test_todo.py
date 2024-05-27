@@ -3,10 +3,10 @@ from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy import text
 
-from ..api.auth import get_current_user
 from ..database import get_db
 from ..main import app
-from ..models.models import Todo
+from ..models.todo import Todo
+from ..services.security.auth import get_current_user
 from .utils import (TestSessionLocal, engine, init_user,
                     override_get_current_user, override_get_db)
 
@@ -45,7 +45,7 @@ def test_read():
   cleanup()
 
 def test_read_all_authenticated(test_read):
-  response = client.get("/todos")
+  response = client.get("/api/v1/todos")
   assert response.status_code == status.HTTP_200_OK
   assert response.json()[0]['title'] == 'test'
   assert response.json()[0]['description'] == 'test'
@@ -54,7 +54,7 @@ def test_read_all_authenticated(test_read):
   assert response.json()[0]['owner_id'] == 1
 
 def test_read_by_id_authenticated(test_read):
-  response = client.get("/todos/1")
+  response = client.get("/api/v1/todos/1")
   assert response.status_code == status.HTTP_200_OK
   assert response.json()['title'] == 'test'
   assert response.json()['description'] == 'test'
@@ -69,7 +69,7 @@ def test_update_authenticated(test_read):
     'priority': 5,
     'complete': False
   }
-  response = client.put("/todos/1", json=request_data)
+  response = client.put("/api/v1/todos/1", json=request_data)
   assert response.status_code == status.HTTP_204_NO_CONTENT
 
 def test_create_authenticated(test_create):
@@ -79,9 +79,9 @@ def test_create_authenticated(test_create):
     'priority': 5,
     'complete': False
   }
-  response = client.post("/todos", json=request_data)
+  response = client.post("/api/v1/todos", json=request_data)
   assert response.status_code == status.HTTP_201_CREATED
 
 def test_delete_authenticated(test_read):
-  response = client.delete("/todos/1")
+  response = client.delete("/api/v1/todos/1")
   assert response.status_code == status.HTTP_204_NO_CONTENT

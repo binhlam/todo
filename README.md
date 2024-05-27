@@ -22,7 +22,7 @@
     curl -X 'GET' \
     'http://127.0.0.1:8000/v1/users/1' \
     -H 'accept: application/json' \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbjAxIiwiaWQiOjEsInJvbGUiOiJhZG1pbiIsImV4cCI6MTcxNjc5NjY4N30.XOBNXM6wtv87khJwGynOnZWD9ztrDoo_fxDGB23LWJ4'
+    -H 'Authorization: Bearer <bearer_token>'
     ```
 
 3. Documented & tested with swagger:

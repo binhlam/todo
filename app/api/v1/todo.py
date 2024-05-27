@@ -6,17 +6,19 @@ from sqlalchemy.orm import Session
 from ...config.exceptions import (CreateRecordError, DeleteRecordError,
                                   RecordNotFound, UpdateRecordError)
 from ...database import get_db
+from ...models.todo import Todo
 from ...models.user import User
 from ...schemas.todo import TodoCreate, TodoUpdate
 from ...services import todo as todo_service
-from ...services.security import auth as auth_service
+from ...services.security.auth import get_current_user
 
 router = APIRouter(
-  prefix='/v1'
+  prefix='/v1',
+  tags=['todo']
 )
 
 db_dependency = Annotated[Session, Depends(get_db)]
-user_dependency = Annotated[User, Depends(lambda: auth_service.get_current_user(db_dependency))]
+user_dependency = Annotated[User, Depends(get_current_user)]
 
 @router.get("/todos")
 async def get_todos(db: db_dependency,
@@ -45,7 +47,7 @@ async def create(db: db_dependency,
                  request: TodoCreate):
   
   try:
-    todo = TodoCreate(**request.dict(), owner_id=current_user.id)
+    todo = Todo(**request.dict(), owner_id=current_user.id)
     todo_service.create_todo(db=db, todo_create=todo)
   except CreateRecordError:
     raise HTTPException(
