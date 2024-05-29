@@ -18,14 +18,17 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER:
-          POSTGRES_PASSWORD:
+          POSTGRES_USER: eh
+          POSTGRES_PASSWORD: todo_test
           POSTGRES_DB: todo_test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    
+    env:
+      DATABASE_URL: postgresql://eh:todo_test@localhost/todo_test
 
     steps:
       - name: Checkout code
@@ -35,14 +38,28 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
+      
+      - name: Set up virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          python -m pip install --upgrade pip
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          source venv/bin/activate
           pip install -r requirements.txt
+      
+      - name: Create .env file
+        run: |
+          echo DATABASE_URL=postgresql://eh:todo_test@localhost/todo_test >> .env
+      
+      - name: Apply Alembic migrations
+        run: |
+          source venv/bin/activate
+          alembic upgrade head
 
       - name: Run tests
-        env:
-          DATABASE_URL: postgresql://localhost:5432/todo_test
         run: |
+          source venv/bin/activate
           pytest
