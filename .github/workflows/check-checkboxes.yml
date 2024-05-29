@@ -1,0 +1,15 @@
+name: Check Checkboxes
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  check-checkboxes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Checkboxes
+        uses: your-username/check-checkboxes-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
