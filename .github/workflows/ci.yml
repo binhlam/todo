@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      - dev
+      - main
       
 jobs:
   unittest:
@@ -60,6 +60,8 @@ jobs:
           alembic upgrade head
 
       - name: Run tests
+        env:
+          DATABASE_URL: postgresql://eh:todo_test@localhost/todo_test
         run: |
           source venv/bin/activate
           pytest
