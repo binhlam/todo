@@ -1,3 +1,4 @@
+import os
 from logging.config import fileConfig
 
 from alembic import context
@@ -14,6 +15,14 @@ config = context.config
 # This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
+
+# Getting the DATABASE_URL environment variable
+database_url = os.getenv("DATABASE_URL")
+if not database_url:
+    raise ValueError("DATABASE_URL environment variable is not set")
+
+# Override the ini-file sqlalchemy.url setting
+config.set_main_option("postgres.url", database_url)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
