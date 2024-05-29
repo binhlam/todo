@@ -36,7 +36,7 @@ def test_read():
     title="test",
     description="test",
     priority=5,
-    complete=False,
+    complete=0,
     owner_id=1
   )
   db.add(todo)
@@ -50,7 +50,7 @@ def test_read_all_authenticated(test_read):
   assert response.json()[0]['title'] == 'test'
   assert response.json()[0]['description'] == 'test'
   assert response.json()[0]['priority'] == 5
-  assert response.json()[0]['complete'] == False
+  assert response.json()[0]['complete'] == 0
   assert response.json()[0]['owner_id'] == 1
 
 def test_read_by_id_authenticated(test_read):
@@ -59,7 +59,7 @@ def test_read_by_id_authenticated(test_read):
   assert response.json()['title'] == 'test'
   assert response.json()['description'] == 'test'
   assert response.json()['priority'] == 5
-  assert response.json()['complete'] == False
+  assert response.json()['complete'] == 0
   assert response.json()['owner_id'] == 1
 
 def test_update_authenticated(test_read):
@@ -67,7 +67,7 @@ def test_update_authenticated(test_read):
     'title': 'update',
     'description': 'test update',
     'priority': 5,
-    'complete': False
+    'complete': 0
   }
   response = client.put("/api/v1/todos/1", json=request_data)
   assert response.status_code == status.HTTP_204_NO_CONTENT
@@ -77,7 +77,7 @@ def test_create_authenticated(test_create):
     'title': 'create',
     'description': 'test create',
     'priority': 5,
-    'complete': False
+    'complete': 0
   }
   response = client.post("/api/v1/todos", json=request_data)
   assert response.status_code == status.HTTP_201_CREATED
