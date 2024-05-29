@@ -17,12 +17,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # Getting the DATABASE_URL environment variable
-
-if os.getenv("ENV") == "test":
-    database_url = os.getenv("TEST_DATABASE_URL")
-else:
-    database_url = os.getenv("DATABASE_URL")
-
+database_url = os.getenv("DATABASE_URL")
 if not database_url:
     raise ValueError("DATABASE_URL environment variable is not set")
 
