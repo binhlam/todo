@@ -1,3 +1,6 @@
+import os
+
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -5,7 +8,9 @@ from sqlalchemy.orm import sessionmaker
 from ..models.user import User
 from ..services.security.utils import bcrypt_context
 
-DATABASE_URL = 'postgresql://localhost:5432/todo_test'
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL)
 
