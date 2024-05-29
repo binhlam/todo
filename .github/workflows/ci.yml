@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - dev
+      
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: eh
+          POSTGRES_PASSWORD: todo_test
+          POSTGRES_DB: todo_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    env:
+      DATABASE_URL: postgresql://eh:todo_test@localhost/todo_test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      
+      - name: Set up virtual environment
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          python -m pip install --upgrade pip
+
+      - name: Install dependencies
+        run: |
+          source venv/bin/activate
+          pip install -r requirements.txt
+      
+      - name: Create .env file
+        run: |
+          echo DATABASE_URL=postgresql://eh:todo_test@localhost/todo_test >> .env
+      
+      - name: Apply Alembic migrations
+        run: |
+          source venv/bin/activate
+          alembic upgrade head
+
+      - name: Run tests
+        run: |
+          source venv/bin/activate
+          pytest
