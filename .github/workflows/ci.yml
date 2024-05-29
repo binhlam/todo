@@ -26,9 +26,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    
-    env:
-      TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/todo_test
 
     steps:
       - name: Checkout code
@@ -52,6 +49,7 @@ jobs:
       
       - name: Create .env file
         run: |
+          echo ENV=test >> .env
           echo TEST_DATABASE_URL=postgresql://postgres:postgres@localhost:5432/todo_test >> .env
       
       - name: Apply Alembic migrations
@@ -60,8 +58,6 @@ jobs:
           alembic upgrade head
 
       - name: Run tests
-        env:
-          TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/todo_test
         run: |
           source venv/bin/activate
           pytest
