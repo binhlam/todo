@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Validate checklist in PR desc
+      - name: Validate checklist in PR description
         id: validate
         run: |
           # Fetch the PR description
