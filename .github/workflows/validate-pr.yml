@@ -1,0 +1,34 @@
+name: Validate PR
+
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  validate-checklist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate checklist in PR desc
+        id: validate
+        run: |
+          # Fetch the PR description
+          PR_DESCRIPTION=$(jq -r '.pull_request.body' "$GITHUB_EVENT_PATH")
+          
+          # Check if all required checkboxes are checked
+          REQUIRED_CHECKBOXES=(
+            "I have reviewed my code."
+            "I have tested the changes locally."
+            "I have updated the documentation (if applicable)."
+          )
+
+          for CHECKBOX in "${REQUIRED_CHECKBOXES[@]}"; do
+            if ! echo "$PR_DESCRIPTION" | grep -q "\- \[x\] $CHECKBOX"; then
+              echo "::error::The checkbox '$CHECKBOX' is not checked."
+              exit 1
+            fi
+          done
+
+      - name: Success message
+        if: success()
+        run: echo "All required checkboxes are checked."
