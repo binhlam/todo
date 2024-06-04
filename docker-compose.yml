@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  api:
+    build: .
+    container_name: todo_api
+    command: /app/start.sh
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+  
+  db:
+    image: postgres:latest
+    container_name: todo_postgres
+    environment:
+      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    volumes:
+      - volumes_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  volumes_data:
