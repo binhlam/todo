@@ -22,6 +22,8 @@
     cd ~/<your-path>/todo
     docker-compose up --build
     ```
+    <img width="871" alt="image" src="https://github.com/binhlam/todo/assets/19790314/b9559ea8-93b6-436f-8386-348df30446cd">
+
 
 3. Sample curl:
     ```sh
