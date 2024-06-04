@@ -17,7 +17,13 @@
     uvicorn app.main:app --reload
     ```
 
-2. Sample curl:
+2. Or run with Docker:
+    ```sh
+    cd ~/<your-path>/todo
+    docker-compose up --build
+    ```
+
+3. Sample curl:
     ```sh
     curl -X 'GET' \
     'http://127.0.0.1:8000/v1/users/1' \
@@ -25,7 +31,7 @@
     -H 'Authorization: Bearer <bearer_token>'
     ```
 
-3. Documented & tested with swagger:
+4. Documented & tested with swagger:
     * Localhost run:
     ```sh
     http://127.0.0.1:8000/docs
